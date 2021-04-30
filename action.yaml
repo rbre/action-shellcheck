@@ -116,12 +116,6 @@ runs:
         done
         echo "::set-output name=files::${files[@]}"
 
-    - name: Show changed files
-      shell: bash
-      id: changed
-      run: |
-        echo "DEBUG:: ${{ inputs.changed_files }} "
-
     - name: Gather base file paths
       shell: bash
       id: filepaths
