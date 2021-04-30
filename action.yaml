@@ -120,7 +120,7 @@ runs:
       shell: bash
       id: changed
       run: |
-        echo ":: ${{ inputs.changed_files }} "
+        echo "DEBUG:: ${{ inputs.changed_files }} "
 
     - name: Gather base file paths
       shell: bash
@@ -194,8 +194,10 @@ runs:
       run: |
         statuscode=0
 
-        if [[ -n "${{ inputs.additional_files }}" ]]; then
-          echo "Changed files is set :: ${{ inputs.additional_files }}"
+        if [[ -n "${{ inputs.changed_files }}" ]]; then
+          for file in ${{ steps.filepaths.outputs.filepaths }} ; do
+            echo "DEBUG:: changed file ${file}"
+          done
           statuscode=0
         elif [[ -n "${{ inputs.check_together }}" ]]; then
            "${{ github.action_path }}/shellcheck" \
