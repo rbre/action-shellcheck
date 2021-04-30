@@ -195,7 +195,7 @@ runs:
         statuscode=0
 
         if [[ -n "${{ inputs.changed_files }}" ]]; then
-          for file in ${{ steps.filepaths.outputs.filepaths }} ; do
+          for file in "${{ steps.filepaths.outputs.filepaths }}"; do
             echo "DEBUG:: changed file ${file}"
           done
           statuscode=0
