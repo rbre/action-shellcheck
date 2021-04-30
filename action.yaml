@@ -195,7 +195,7 @@ runs:
         statuscode=0
 
         if [[ -n "${{ inputs.additional_files }}" ]]; then
-          echo "Changed files is set!"
+          echo "Changed files is set :: ${{ inputs.additional_files }}"
         elif [[ -n "${{ inputs.check_together }}" ]]; then
            "${{ github.action_path }}/shellcheck" \
            ${{ steps.options.outputs.options }} \
