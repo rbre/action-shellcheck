@@ -6,6 +6,10 @@ inputs:
     description: "A space separated list of additional filename to check"
     required: false
     default: ""
+  changed_files:
+    description: "A space separated list of changed files"
+    required: false
+    default: ""
   ignore:
     description: "Paths to ignore when running ShellCheck"
     required: false
@@ -107,10 +111,16 @@ runs:
       run: |
         declare -a files
         for file in ${{ inputs.additional_files }}; do
-          echo "::debug:: Adding "$file" to excludes"
+          echo "::debug:: Adding "$file" to additional"
           files+=("-o -name \"*$file\"")
         done
         echo "::set-output name=files::${files[@]}"
+
+    - name: Show changed files
+      shell: bash
+      id: changed
+      run: |
+        echo ":: ${{ inputs.changed_files }} "
 
     - name: Gather base file paths
       shell: bash
@@ -184,7 +194,9 @@ runs:
       run: |
         statuscode=0
 
-        if [[ -n "${{ inputs.check_together }}" ]]; then
+        if [[ -n "${{ inputs.additional_files }}" ; then
+          echo "Changed files is set!"
+        elif [[ -n "${{ inputs.check_together }}" ]]; then
            "${{ github.action_path }}/shellcheck" \
            ${{ steps.options.outputs.options }} \
            ${{ steps.filepaths.outputs.filepaths }} || statuscode=$?
