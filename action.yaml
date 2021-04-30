@@ -190,9 +190,11 @@ runs:
 
         if [[ -n "${{ inputs.changed_files }}" ]]; then
           for file in ${{ inputs.changed_files }}; do
-            echo "DEBUG:: changed file ${file}"
+            echo "::debug::Checking $file"
+            "${{ github.action_path }}/shellcheck" \
+            ${{ steps.options.outputs.options }} \
+            "$file" || statuscode=$?;
           done
-          statuscode=0
         elif [[ -n "${{ inputs.check_together }}" ]]; then
            "${{ github.action_path }}/shellcheck" \
            ${{ steps.options.outputs.options }} \
