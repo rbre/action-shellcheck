@@ -194,7 +194,7 @@ runs:
       run: |
         statuscode=0
 
-        if [[ -n "${{ inputs.additional_files }}" ; then
+        if [[ -n "${{ inputs.additional_files }}" ]]; then
           echo "Changed files is set!"
         elif [[ -n "${{ inputs.check_together }}" ]]; then
            "${{ github.action_path }}/shellcheck" \
