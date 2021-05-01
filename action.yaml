@@ -10,8 +10,12 @@ inputs:
     description: "A space separated list of changed files"
     required: false
     default: ""
-  ignore:
+  ignore_path:
     description: "Paths to ignore when running ShellCheck"
+    required: false
+    default: ""
+  ignore_suffix:
+    description: "Suffix to ignore when running ShellCheck"
     required: false
     default: ""
   severity:
@@ -98,10 +102,14 @@ runs:
         excludes+=("! -path \"*./.git/*\"")
         excludes+=("! -path \"*.go\"")
         excludes+=("! -path \"*/mvnw\"")
-        for path in ${{ inputs.ignore }}; do
+        for path in ${{ inputs.ignore_path }}; do
           echo "::debug:: Adding "$path" to excludes"
           excludes+=("! -path \"*./$path/*\"")
           excludes+=("! -path \"*/$path/*\"")
+        done
+        for suffix in ${{ inputs.ignore_suffix }}; do
+          echo "::debug:: Adding "$suffix" to excludes"
+          excludes+=("! -path \"*.${suffix}\"")
         done
         echo "::set-output name=excludes::${excludes[@]}"
 
