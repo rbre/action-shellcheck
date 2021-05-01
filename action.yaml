@@ -214,7 +214,7 @@ runs:
       shell: bash
       run: |
         echo "Files: ${{steps.filepaths.outputs.filepaths}}"
-        echo "Changed: {{ inputs.changed_files }}"
+        echo "Changed: ${{ inputs.changed_files }}"
         echo "Excluded: ${{ steps.exclude.outputs.excludes }}"
         echo "Options: ${{ steps.options.outputs.options }}"
         echo "Status code: ${{steps.check.outputs.statuscode}}"
