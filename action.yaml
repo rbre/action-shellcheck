@@ -232,8 +232,8 @@ runs:
       run: |
         statuscode=0
 
-        if [[ -n "${{ inputs.changed_files }}" ]]; then
-          for file in ${{ inputs.changed_files }}; do
+        if [[ -n "${{steps.changed.outputs.check_list}}" ]]; then
+          for file in ${{steps.changed.outputs.check_list}}; do
             echo "::debug::Checking $file"
             "${{ github.action_path }}/shellcheck" \
             ${{ steps.options.outputs.options }} \
@@ -262,6 +262,6 @@ runs:
         echo "Excluded: ${{ steps.exclude.outputs.excludes }}"
         echo "Options: ${{ steps.options.outputs.options }}"
         echo "Status code: ${{steps.check.outputs.statuscode}}"
-        echo "Changed changed: ${{steps.changed.outputs.check_list}}"
+        echo "Changed check: ${{steps.changed.outputs.check_list}}"
 
         exit ${{steps.check.outputs.statuscode}}
