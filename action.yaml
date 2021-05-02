@@ -128,11 +128,6 @@ runs:
       shell: bash
       id: changed
       run: |
-        #ignore_path="server_config docs"
-        #ignore_suffix="yml"
-
-        #check_list=".github/workflows/shellcheck-changed.yml .github/workflows/shellcheck.yml lib/add_serverlist_child server_config/my.sh test/server_config.sh"
-
         declare -a check_list
         for file in ${{ inputs.changed_files }}; do
             ignore_match=true
@@ -140,19 +135,16 @@ runs:
             for path in ${{ inputs.ignore_path }}; do
                 if [[ $file == *"${path}/"* ]]; then
                     ignore_match=false
-                    echo "$file matched"
                 fi
             done
 
             for suffix in ${{ inputs.ignore_suffix }}; do
                 if [[ $file == *".${suffix}"* ]]; then
                     ignore_match=false
-                    echo "$file matched"
                 fi
             done
 
             if $ignore_match ; then
-                echo "$file added"
                 check_list+=("$file");
             fi
 
@@ -261,7 +253,11 @@ runs:
         echo "Options: ${{ steps.options.outputs.options }}"
         if [[ -n "${{steps.changed.outputs.check_list}}" ]]; then
           echo "Changed: ${{ inputs.changed_files }}"
-          echo "Files checked: ${{steps.changed.outputs.check_list}}"
+          if [[ -n ${{steps.changed.outputs.check_list}} ]]; then
+            echo "Files checked: ${{steps.changed.outputs.check_list}}"
+          else
+            echo "Files checked: none"
+          fi
         else
           echo "Files: ${{steps.filepaths.outputs.filepaths}}"
         fi
