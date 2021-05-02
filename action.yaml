@@ -261,7 +261,7 @@ runs:
         echo "Options: ${{ steps.options.outputs.options }}"
         if [[ -n "${{steps.changed.outputs.check_list}}" ]]; then
           echo "Changed: ${{ inputs.changed_files }}"
-          echo "Changed check: ${{steps.changed.outputs.check_list}}"
+          echo "Files checked: ${{steps.changed.outputs.check_list}}"
         else
           echo "Files: ${{steps.filepaths.outputs.filepaths}}"
         fi
