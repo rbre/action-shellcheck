@@ -128,10 +128,10 @@ runs:
       shell: bash
       id: changed
       run: |
-        ignore_path="server_config docs"
-        ignore_suffix="yml"
+        #ignore_path="server_config docs"
+        #ignore_suffix="yml"
 
-        check_list=".github/workflows/shellcheck-changed.yml .github/workflows/shellcheck.yml lib/add_serverlist_child server_config/my.sh test/server_config.sh"
+        #check_list=".github/workflows/shellcheck-changed.yml .github/workflows/shellcheck.yml lib/add_serverlist_child server_config/my.sh test/server_config.sh"
 
         declare -a check_list
         for file in ${{ inputs.changed_files }}; do
