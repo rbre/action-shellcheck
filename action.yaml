@@ -257,11 +257,14 @@ runs:
     - name: Print information
       shell: bash
       run: |
-        echo "Files: ${{steps.filepaths.outputs.filepaths}}"
-        echo "Changed: ${{ inputs.changed_files }}"
         echo "Excluded: ${{ steps.exclude.outputs.excludes }}"
         echo "Options: ${{ steps.options.outputs.options }}"
-        echo "Status code: ${{steps.check.outputs.statuscode}}"
-        echo "Changed check: ${{steps.changed.outputs.check_list}}"
+        if [[ -n "${{steps.changed.outputs.check_list}}" ]]; then
+          echo "Changed: ${{ inputs.changed_files }}"
+          echo "Changed check: ${{steps.changed.outputs.check_list}}"
+        else
+          echo "Files: ${{steps.filepaths.outputs.filepaths}}"
+        fi
 
+        echo "Status code: ${{steps.check.outputs.statuscode}}"
         exit ${{steps.check.outputs.statuscode}}
