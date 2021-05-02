@@ -100,8 +100,6 @@ runs:
       run: |
         declare -a excludes
         excludes+=("! -path \"*./.git/*\"")
-        excludes+=("! -path \"*.go\"")
-        excludes+=("! -path \"*/mvnw\"")
         for suffix in ${{ inputs.ignore_suffix }}; do
           echo "::debug:: Adding "$suffix" to excludes"
           excludes+=("! -path \"*.${suffix}\"")
