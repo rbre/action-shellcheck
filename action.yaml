@@ -122,7 +122,7 @@ runs:
         done
         echo "::set-output name=files::${files[@]}"
 
-    - name: Gather additional files
+    - name: Gather changed files
       shell: bash
       id: changed
       run: |
