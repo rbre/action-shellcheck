@@ -124,7 +124,7 @@ runs:
 
     - name: Gather check files
       shell: bash
-      id: check
+      id: check_changed
       run: |
         declare -a check_list
         for file in ${{ inputs.changed_files }}; do
@@ -222,8 +222,8 @@ runs:
       run: |
         statuscode=0
 
-        if [[ -n "${{steps.check.outputs.list}}" ]]; then
-          for file in ${{steps.check.outputs.list}}; do
+        if [[ -n "${{steps.check_changed.outputs.list}}" ]]; then
+          for file in ${{steps.check_changed.outputs.list}}; do
             echo "::debug::Checking $file"
             "${{ github.action_path }}/shellcheck" \
             ${{ steps.options.outputs.options }} \
@@ -249,9 +249,9 @@ runs:
       run: |
         echo "Excluded: ${{ steps.exclude.outputs.excludes }}"
         echo "Options: ${{ steps.options.outputs.options }}"
-        if [[ -n "${{steps.check.outputs.list}}" ]]; then
+        if [[ -n "${{steps.check_changed.outputs.list}}" ]]; then
           echo "Changed: ${{ inputs.changed_files }}"
-          echo "Files checked: ${{steps.check.outputs.list}}"
+          echo "Files checked: ${{steps.check_changed.outputs.list}}"
         else
           echo "Files: ${{steps.filepaths.outputs.filepaths}}"
         fi
