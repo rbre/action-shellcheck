@@ -122,33 +122,33 @@ runs:
         done
         echo "::set-output name=files::${files[@]}"
 
-    - name: Gather changed files
+    - name: Gather check files
       shell: bash
-      id: changed
+      id: check
       run: |
         declare -a check_list
         for file in ${{ inputs.changed_files }}; do
-            ignore_match=true
+            add_file=true
 
             for path in ${{ inputs.ignore_path }}; do
                 if [[ $file == *"${path}/"* ]]; then
-                    ignore_match=false
+                    add_file=false
                 fi
             done
 
             for suffix in ${{ inputs.ignore_suffix }}; do
                 if [[ $file == *".${suffix}"* ]]; then
-                    ignore_match=false
+                    add_file=false
                 fi
             done
 
-            if $ignore_match ; then
+            if $add_file ; then
                 check_list+=("$file");
             fi
 
         done
 
-        echo "::set-output name=check_list:: ${check_list[@]}"
+        echo "::set-output name=list:: ${check_list[@]}"
 
     - name: Gather base file paths
       shell: bash
@@ -222,8 +222,8 @@ runs:
       run: |
         statuscode=0
 
-        if [[ -n "${{steps.changed.outputs.check_list}}" ]]; then
-          for file in ${{steps.changed.outputs.check_list}}; do
+        if [[ -n "${{steps.check.outputs.list}}" ]]; then
+          for file in ${{steps.check.outputs.list}}; do
             echo "::debug::Checking $file"
             "${{ github.action_path }}/shellcheck" \
             ${{ steps.options.outputs.options }} \
@@ -249,9 +249,9 @@ runs:
       run: |
         echo "Excluded: ${{ steps.exclude.outputs.excludes }}"
         echo "Options: ${{ steps.options.outputs.options }}"
-        if [[ -n "${{steps.changed.outputs.check_list}}" ]]; then
+        if [[ -n "${{steps.check.outputs.list}}" ]]; then
           echo "Changed: ${{ inputs.changed_files }}"
-          echo "Files checked: ${{steps.changed.outputs.check_list}}"
+          echo "Files checked: ${{steps.check.outputs.list}}"
         else
           echo "Files: ${{steps.filepaths.outputs.filepaths}}"
         fi
