@@ -169,6 +169,7 @@ runs:
             -o -name '.bash_logout' \
             -o -name '.bash_profile' \
             -o -name 'bash_profile' \
+            -o -name '.gitignore' \
             -o -name '*.ksh' \
             -o -name 'suid_profile' \
             -o -name '*.zsh' \
