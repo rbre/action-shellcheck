@@ -142,6 +142,10 @@ runs:
                 fi
             done
 
+            if [[ ! -f $file ]] ; then
+              add_file=false
+            fi
+
             if $add_file ; then
                 check_list+=("$file");
             fi
